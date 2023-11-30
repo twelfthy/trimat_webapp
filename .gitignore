@@ -1,0 +1,7 @@
+*.png
+*.jpg
+*.xml
+*.DS_Store
+.DS_Store
+*.pth
+.pth
