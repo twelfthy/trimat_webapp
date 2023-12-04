@@ -7,7 +7,7 @@ from matplotlib.animation import FuncAnimation
 import time
 
 # Define the serial port and baud rate for the Arduino
-ser = serial.Serial('/dev/cu.usbserial-1420', 250000)
+ser = serial.Serial('/dev/cu.usbserial-1420', 57600)
 
 # Create a figure and a heatmap subplot
 fig, ax = plt.subplots()

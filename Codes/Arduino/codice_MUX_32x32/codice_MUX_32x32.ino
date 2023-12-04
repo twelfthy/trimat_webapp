@@ -76,9 +76,10 @@ void setup() {
   digitalWrite(EN, LOW);
   pinMode(INPIN, OUTPUT);
   digitalWrite(INPIN, LOW);
-  Serial.begin(9600);
+  Serial.begin(2000000);
 
   //32MUX:
+  //S-register 1:
   pinMode(EPin, OUTPUT);// Inizializza EPin come OUTPUT
   digitalWrite(EPin, LOW); // presetta EPin LOW, leggere la nota all'inizio del programma per i dettagli
   
@@ -90,16 +91,20 @@ void setup() {
     pinMode(SPin[i], OUTPUT); // Inizializza tutti gli Spin come OUTPUT
     digitalWrite(SPin[i], LOW); // Setta tutti gli Spin LOW
   }
-}
 
-//void pinSelectSR(int x){
-//  for (int i = 0; i<8; i++){
-//    if (i == x){
-//      digitalWrite(C[i], HIGH);
-//    }
-//    else digitalWrite(C[i], LOW);
-//  }
-//}
+  //S-register 2:
+  pinMode(EPin2, OUTPUT);// Inizializza EPin come OUTPUT
+  digitalWrite(EPin2, LOW); // presetta EPin LOW, leggere la nota all'inizio del programma per i dettagli
+  
+  pinMode(SIG2, OUTPUT); // Inizializza SIG come OUTPUT
+  digitalWrite(SIG2, HIGH); // Presetta SIG HIGH, serve per il nostro esperimeto poi andrà settato a seconda delle necessità
+
+  for (int i = 0; i < 4; i++)
+  {
+    pinMode(SPin2[i], OUTPUT); // Inizializza tutti gli Spin come OUTPUT
+    digitalWrite(SPin2[i], LOW); // Setta tutti gli Spin LOW
+  }
+}
 
 void YSelect(int Y){
   digitalWrite(SPin[0], STable[Y][0]);
@@ -125,11 +130,8 @@ void Print_Matrix(){
     for (int j = 31; j>=0; j--){
       Serial.print(Matrix[i][j]);
       if (j == 0&&i==31) break;
-//      if (i == 7 && j == 0) break;
       else Serial.print(",");
     }
-//    Serial.print(";");
-//    Serial.println();   //Per lettura sul serial monitor
   }
   Serial.println();
 }
@@ -139,32 +141,18 @@ void loop() {
   tempo = micros();
   
   for (int x = 0; x<16; x++){
-//    pinSelectSR(x);
-    t_interval=tempo;
-    YSelect(x);
-    t_interval=tempo-t_interval;
-//    Serial.print("T1: YSelect ");
-//    Serial.println(t_interval);
-    for(int y = 0; y<32; y++){
-    t_interval = tempo-t_interval;
-    pinSelectMux(y);
-    t_interval=tempo-t_interval;
-//    Serial.print("T2: pinSelectMux ");
-//    Serial.println(t_interval);
-    Read(x, y);
-    t_interval=tempo-t_interval;
-//    Serial.print("T3: Read ");
-//    Serial.println(t_interval);
-    }
-    
-  }
-  for (int x = 0; x<16; x++){
-//    pinSelectSR(x);
     YSelect2(x);
     for(int y = 0; y<32; y++){
     pinSelectMux(y);
     Read(x, y);
-//    Serial.print(analogRead(A0));
+    }
+    
+  }
+  for (int x = 0; x<16; x++){
+    YSelect(x);
+    for(int y = 0; y<32; y++){
+    pinSelectMux(y);
+    Read(x+16, y);
     }
   }
   Print_Matrix();
