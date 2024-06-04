@@ -38,7 +38,7 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH, desired_width)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, desired_height)
 
 video_label = tk.Label(root)  # Label to display the video
-video_label.place(x=192, y=300)  # Adjust this position to match the gray area
+video_label.place(x=0, y=0)  # Adjust this position to match the gray area
 
 def process_frame(frame):
     # Resize and preprocess the frame for TensorFlow Lite model
